@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Dominó</title>
+    <link rel="stylesheet" href="src/css/style_jogo.css">
+</head>
+
+<body>
+    <div id="tela-jogo" class="tela ativa">
+        <header id="info-panel">
+            <div class="info-box">
+                <span>Vez do Jogador:</span>
+                <strong id="jogador-atual">1</strong>
+            </div>
+            <div class="info-box">
+                <span>Peças no Monte:</span>
+                <strong id="pecas-restantes">28</strong>
+            </div>
+            <a href="index.html" class="button-link back-button">Voltar ao Menu</a>
+        </header>
+
+        <main id="tabuleiro-container">
+            <div id="tabuleiro"></div>
+        </main>
+
+        <footer id="action-panel">
+            <div id="log-mensagens"></div>
+            <div id="controles-jogador" class="hidden">
+                <p>Sua jogada:</p>
+                <button id="btn-jogar-inicio">Jogar pelo Início</button>
+                <button id="btn-jogar-fim">Jogar pelo Fim</button>
+            </div>
+        </footer>
+    </div>
+
+    <script type="module" src="src/js/main.js"></script>
+</body>
+
+</html>

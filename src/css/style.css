@@ -26,4 +26,36 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 80%;
     height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 50%;
+}
+
+.button-link {
+    text-decoration: none;
+    width: 100%;
+}
+
+.game-button {
+    background-color: #61dafb;
+    border: none;
+    width: 100%;
+    border-radius: 5px;
+    padding: 10px 20px;
+    color: #20232a;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.game-button:hover {
+    background-color: #21a1f1;
 }

@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+* {
+    font-family: 'Press Start 2P', cursive;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #282c34;
+    color: #61dafb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.tela {
+    display: none;
+}
+
+.tela.ativa {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 90%;
+    height: 90%;
+    background-color: #20232a;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+}
+
+header#info-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #282c34;
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+.info-box {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+}
+
+#jogador-atual,
+#pecas-restantes {
+    font-size: 14px;
+    color: #21a1f1;
+}
+
+.button-link {
+    text-decoration: none;
+    background-color: #61dafb;
+    border-radius: 5px;
+    padding: 8px 12px;
+    color: #20232a;
+    font-size: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.button-link:hover {
+    background-color: #21a1f1;
+}
+
+main#tabuleiro-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1c1e24;
+    border-radius: 8px;
+    overflow: auto;
+    padding: 10px;
+}
+
+#tabuleiro {
+    min-width: 200px;
+    min-height: 200px;
+    border: 2px dashed #61dafb;
+    border-radius: 5px;
+}
+
+footer#action-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#log-mensagens {
+    background-color: #1c1e24;
+    border-radius: 5px;
+    padding: 10px;
+    min-height: 60px;
+    font-size: 10px;
+    overflow-y: auto;
+}
+
+#controles-jogador {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#controles-jogador.hidden {
+    display: none;
+}
+
+#controles-jogador button {
+    background-color: #61dafb;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    color: #20232a;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#controles-jogador button:hover {
+    background-color: #21a1f1;
+}
