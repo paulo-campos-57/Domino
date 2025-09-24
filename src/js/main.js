@@ -1,15 +1,9 @@
-import BurrinhoInteligente from './game/BurrinhoInteligente.js';
+import JogoController from './game/JogoController.js';
 
-const jogo = new BurrinhoInteligente();
+const urlParams = new URLSearchParams(window.location.search);
 
-jogo.iniciarSimulacao();
+const modoDeJogo = urlParams.get('modo');
 
-/*
-// Para jogar um turno de cada vez (se fosse interativo):
-console.log("\n--- JOGANDO UM TURNO MANUALMENTE ---");
-// Jogador 1 escolhe 'inicio'
-jogo.jogarTurno('inicio');
+const jogo = new JogoController();
 
-// Jogador 2 escolhe 'fim'
-jogo.jogarTurno('fim');
-*/
+jogo.iniciarJogo(modoDeJogo);

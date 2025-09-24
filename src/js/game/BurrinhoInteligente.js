@@ -95,4 +95,16 @@ export default class BurrinhoInteligente {
         console.log("Tabuleiro final:");
         this.tabuleiro.imprimir();
     }
+
+    checarJogoTrancado() {
+        for (const peca of this.pecasDisponiveis) {
+            if (
+                this.tabuleiro.incluirDoInicio(peca) !== -1 ||
+                this.tabuleiro.incluirDoFim(peca) !== -1
+            ) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

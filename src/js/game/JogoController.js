@@ -3,114 +3,74 @@ import BurrinhoInteligente from './BurrinhoInteligente.js';
 export default class JogoController {
     constructor() {
         this.jogo = new BurrinhoInteligente();
-        this._mapearElementos();
+        this._mapearElementosDOM();
     }
 
-    _mapearElementos() {
-        this.menuEl = document.getElementById('menu-inicial');
-        this.telaJogoEl = document.getElementById('tela-jogo');
-
-        this.btnModoJogador = document.getElementById('btn-modo-jogador');
-        this.btnModoSimulacao = document.getElementById('btn-modo-simulacao');
-
-        this.infoPanelEl = document.getElementById('info-panel');
-        this.tabuleiroEl = document.getElementById('tabuleiro');
-        this.logEl = document.getElementById('log-mensagens');
-        this.controlesEl = document.getElementById('controles-jogador');
-        this.btnJogarInicio = document.getElementById('btn-jogar-inicio');
-        this.btnJogarFim = document.getElementById('btn-jogar-fim');
+    _mapearElementosDOM() {
+        this.telaJogoEl = document.querySelector('#tela-jogo');
+        this.jogadorAtualEl = document.querySelector('#jogador-atual');
+        this.pecasRestantesEl = document.querySelector('#pecas-restantes');
+        this.tabuleiroEl = document.querySelector('#tabuleiro');
+        this.logEl = document.querySelector('#log-mensagens');
+        this.controlesEl = document.querySelector('#controles-jogador');
+        this.btnJogarInicio = document.querySelector('#btn-jogar-inicio');
+        this.btnJogarFim = document.querySelector('#btn-jogar-fim');
     }
 
-    iniciar() {
-        this.btnModoJogador.onclick = () => this._iniciarModoJogador();
-        this.btnModoSimulacao.onclick = () => this._iniciarModoSimulacao();
-    }
-
-    _transicaoParaJogo() {
-        this.menuEl.style.display = 'none';
-        this.telaJogoEl.style.display = 'block';
+    iniciarJogo(modo) {
+        if (modo === 'simulacao') {
+            this._iniciarModoSimulacao();
+        } else if (modo === 'jogador') {
+            this._iniciarModoJogador();
+        } else {
+            this.logEl.textContent = 'Erro! Modo de jogo inválido. Volte ao menu.';
+        }
     }
 
     _iniciarModoSimulacao() {
-        this._transicaoParaJogo();
-        this.logEl.textContent = 'Iniciando modo simulação...\n';
-
-        const intervalo = setInterval(() => {
+        this._adicionarLog('Iniciando modo simulação...', 'log-info');
+        const intervaloSimulacao = setInterval(() => {
             if (this.jogo.pecasDisponiveis.length === 0) {
-                this._adicionarLog('FIM DE JOGO! Todas as peças foram usadas.');
-                clearInterval(intervalo);
+                this._adicionarLog('FIM DE JOGO! Todas as peças foram usadas.', 'log-final');
+                clearInterval(intervaloSimulacao);
                 return;
             }
-
-            const resultado = this.jogo.jogarTurno(Math.random() < 0.5 ? 'inicio' : 'fim');
-            this._atualizarTextoUI(resultado);
-
-            if (this.jogo.checarJogoTrancado(resultado)) {
-                this._adicionarLog(`JOGO TRANCADO! Nenhuma das ${this.jogo.pecasDisponiveis.length} peças restantes serve.`);
-                clearInterval(intervalo);
+            const resultadoTurno = this.jogo.jogarTurno(Math.random() < 0.5 ? 'inicio' : 'fim');
+            this._atualizarUI(resultadoTurno);
+            if (this.jogo.checarJogoTrancado(resultadoTurno)) {
+                this._adicionarLog(`JOGO TRANCADO! Nenhuma das ${this.jogo.pecasDisponiveis.length} peças restantes serve.`, 'log-final');
+                clearInterval(intervaloSimulacao);
             }
-        }, 300);
+        }, 500);
     }
 
-    _iniciarModoJogador() {
-        this._transicaoParaJogo();
-        this._adicionarLog('Modo jogador iniciado.');
-
-        this.btnJogarInicio.onclick = () => this._executarTurnoJogador('inicio');
-        this.btnJogarFim.onclick = () => this._executarTurnoJogador('fim');
-
-        this._prepararProximoTurno();
-    }
-
-    _prepararProximoTurno() {
-        this._atualizarTextoUI();
-        this.controlesEl.style.display = 'block';
-    }
-
-    _executarTurnoJogador(estrategia) {
-        this.controlesEl.style.display = 'none';
-
-        const resultado = this.jogo.jogarTurno(estrategia);
-        this._atualizarTextoUI(resultado);
-
-        if (this.jogo.pecasDisponiveis.length === 0) {
-            this._adicionarLog('FIM DE JOGO! Todas as peças foram usadas.');
-            return;
+    _adicionarLog(mensagem, classe = '') {
+        if (this.logEl) {
+            const div = document.createElement('div');
+            div.textContent = mensagem;
+            if (classe) div.classList.add(classe);
+            this.logEl.appendChild(div);
         }
-
-        if (this.jogo.checarJogoTrancado(resultado)) {
-            this._adicionarLog(`JOGO TRANCADO! Nenhuma das ${this.jogo.pecasDisponiveis.length} peças restantes serve.`);
-            return;
-        }
-
-        this._prepararProximoTurno();
     }
 
-    _atualizarTextoUI(resultadoTurno = null) {
-        this.infoPanelEl.textContent = `Vez do Jogador: ${this.jogo.jogadorAtual} | Peças no Monte: ${this.jogo.pecasDisponiveis.length}`;
-
-        let tabuleiroString = "[ Vazio ]";
-        if (this.jogo.tabuleiro.tamanho > 0) {
-            tabuleiroString = "";
+    _atualizarUI(resultadoTurno) {
+        if (this.jogadorAtualEl) {
+            this.jogadorAtualEl.textContent = `Jogador atual: ${this.jogo.jogadorAtual}`;
+        }
+        if (this.pecasRestantesEl) {
+            this.pecasRestantesEl.textContent = `Peças restantes: ${this.jogo.pecasDisponiveis.length}`;
+        }
+        if (this.tabuleiroEl && this.jogo.tabuleiro) {
+            let pecas = [];
             let ponteiro = this.jogo.tabuleiro.inicio;
-            while (ponteiro !== null) {
-                tabuleiroString += ponteiro.peca.toString() + " ";
+            while (ponteiro) {
+                pecas.push(ponteiro.peca.toString());
                 ponteiro = ponteiro.proximo;
             }
+            this.tabuleiroEl.textContent = pecas.join(' ');
         }
-        this.tabuleiroEl.textContent = tabuleiroString;
-
-        if (resultadoTurno) {
-            const mensagem = `J${resultadoTurno.jogador} tentou pela '${resultadoTurno.estrategia}' com ${resultadoTurno.peca} e ${resultadoTurno.mensagem}`;
-            this._adicionarLog(mensagem);
-        }
-    }
-
-    _adicionarLog(mensagem) {
-        this.logEl.textContent += mensagem + '\n';
-        const logs = this.logEl.textContent.split('\n');
-        if (logs.length > 10) {
-            this.logEl.textContent = logs.slice(logs.length - 10).join('\n');
+        if (resultadoTurno && resultadoTurno.mensagem) {
+            this._adicionarLog(resultadoTurno.mensagem, resultadoTurno.sucesso ? 'log-sucesso' : 'log-erro');
         }
     }
 }
