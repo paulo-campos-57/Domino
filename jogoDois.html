@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dominó - Dois Jogadores</title>
+    <link rel="stylesheet" href="src/css/style_jogo.css">
+</head>
+
+<body>
+    <div id="tela-jogo" class="tela ativa">
+        <header id="info-panel">
+            <div class="info-box">
+                <span id="jogador-atual">Jogador atual: 1</span>
+                <span id="pecas-restantes">Peças restantes: 28</span>
+            </div>
+            <a href="index.html" class="button-link">Voltar ao menu</a>
+        </header>
+        <main id="tabuleiro-container">
+            <div id="tabuleiro"></div>
+        </main>
+        <footer id="action-panel">
+            <div id="controles-jogador"></div>
+            <div id="log-mensagens"></div>
+        </footer>
+    </div>
+    <script type="module">
+        import JogoController from './src/js/game/JogoController.js';
+        const jogo = new JogoController();
+        jogo.iniciarJogo('dupla');
+    </script>
+</body>
+
+</html>
