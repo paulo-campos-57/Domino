@@ -136,6 +136,29 @@ export default class JogoController {
             this.logEl.appendChild(div);
         }
     }
+    _criarDominoPiece(valorA, valorB) {
+        function gerarPips(valor) {
+            const pipsMap = [
+                [], // 0
+                [4], // 1
+                [0, 8], // 2
+                [0, 4, 8], // 3
+                [0, 2, 6, 8], // 4
+                [0, 2, 4, 6, 8], // 5
+                [0, 2, 3, 5, 6, 8], // 6
+            ];
+            const pips = Array(9).fill('');
+            pipsMap[valor].forEach(i => pips[i] = '<span class="domino-pip"></span>');
+            return `<div class="domino-pips">${pips.join('')}</div>`;
+        }
+        return `
+        <div class="domino-piece">
+            <div class="domino-half">${gerarPips(valorA)}</div>
+            <div class="divider"></div>
+            <div class="domino-half">${gerarPips(valorB)}</div>
+        </div>
+    `;
+    }
 
     _atualizarUI(resultadoTurno) {
         if (this.jogadorAtualEl) {
@@ -148,13 +171,12 @@ export default class JogoController {
             let pecas = [];
             let ponteiro = this.jogo.tabuleiro.inicio;
             while (ponteiro) {
-                pecas.push(ponteiro.peca.toString());
+                pecas.push(this._criarDominoPiece(ponteiro.peca.esquerda, ponteiro.peca.direita));
                 ponteiro = ponteiro.proximo;
             }
-            this.tabuleiroEl.textContent = pecas.join(' ');
+            this.tabuleiroEl.innerHTML = pecas.join('');
         }
         if (resultadoTurno && resultadoTurno.mensagem) {
-            this._adicionarLog(resultadoTurno.mensagem, resultadoTurno.sucesso ? 'log-sucesso' : 'log-erro');
         }
     }
 }
